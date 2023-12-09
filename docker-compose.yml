@@ -5,11 +5,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
+      - ./definitions.json:/tmp/definitions.json
     environment:
-      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/run/secrets/rabbit_config"
-    secrets:
-      - rabbit_config
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
 
-secrets:
-  rabbit_config:
-    file: ./definitions.json
+volumes:
+  rabbit_data:
