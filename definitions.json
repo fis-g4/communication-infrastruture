@@ -1,4 +1,21 @@
 {
+    "users": [
+        {
+            "name": "admin",
+            "password": "testing1",
+            "tags": "administrator"
+        },
+        {
+            "name": "consumer",
+            "password": "testing1",
+            "tags": ""
+        },
+        {
+            "name": "sender",
+            "password": "testing1",
+            "tags": ""
+        }
+    ],
     "vhosts": [
         {
             "name": "/"
