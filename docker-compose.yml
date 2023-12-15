@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+
   rabbitmq:
     image: "rabbitmq:3.12-management"
     ports:
@@ -10,6 +12,48 @@ services:
       - ./definitions.json:/tmp/definitions.json
     environment:
       - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
+    networks:
+      - communication-microservice
+
+  server:
+    depends_on:
+      - rabbitmq
+    restart: always
+    container_name: communication-microservice-backend
+    image: communication-microservice-backend:latest
+    build: 
+      context: .
+      dockerfile: server/docker/Dockerfile
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    networks:
+      - communication-microservice
+
+  nginx:
+    restart: always
+    container_name: communication-microservice-nginx
+    image: communication-microservice-nginx:latest
+    build:
+        context: ./nginx
+        dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - server
+    networks:
+      - communication-microservice
 
 volumes:
+  db:
+    name: communication-microservice-db
   rabbit_data:
+
+networks:
+  communication-microservice:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.5.0.0/16
