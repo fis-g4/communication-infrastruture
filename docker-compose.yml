@@ -13,7 +13,7 @@ services:
     environment:
       - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
     networks:
-      - communication-microservice
+      - communication-network
 
   server:
     depends_on:
@@ -29,7 +29,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - communication-microservice
+      - communication-network
 
   nginx:
     restart: always
@@ -39,11 +39,11 @@ services:
         context: ./nginx
         dockerfile: ./Dockerfile
     ports:
-      - 80:80
+      - 81:81
     depends_on:
       - server
     networks:
-      - communication-microservice
+      - communication-network
 
 volumes:
   db:
@@ -51,7 +51,7 @@ volumes:
   rabbit_data:
 
 networks:
-  communication-microservice:
+  communication-network:
     driver: bridge
     ipam:
       driver: default

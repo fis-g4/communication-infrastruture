@@ -53,13 +53,13 @@ function handleMicroserviceRoute(
         if (req.get('Content-Type') !== 'application/json') {
             return res.status(400).send('The content must be a JSON object')
         }
-        if (!data.orderId) {
+        if (!data.operationId) {
             return res
                 .status(400)
-                .send('The content must contain the orderId property')
+                .send('The content must contain the operationId property')
         } else {
-            if (validOperationIds.includes(data.orderId)) {
-                if (operationIdsWithMessage.includes(data.orderId)) {
+            if (validOperationIds.includes(data.operationId)) {
+                if (operationIdsWithMessage.includes(data.operationId)) {
                     if (!data.message) {
                         return res
                             .status(400)
@@ -69,7 +69,7 @@ function handleMicroserviceRoute(
                     }
                 }
             } else {
-                return res.status(400).send('Invalid orderId')
+                return res.status(400).send('Invalid operationId')
             }
             sendToQueueAndRespond(queueName, data, res)
         }
