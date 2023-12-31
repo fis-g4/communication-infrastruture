@@ -92,7 +92,7 @@ handleMicroserviceRoute(
     'reviews-microservice',
     'reviews_microservice',
     ['requestUserReviews', 'requestCourseReviews', 'requestMaterialReviews'],
-    []
+    ['requestUserReviews', 'requestCourseReviews', 'requestMaterialReviews']
 )
 handleMicroserviceRoute(
     'courses-microservice',
@@ -102,12 +102,18 @@ handleMicroserviceRoute(
         'responseAppClassesAndMaterials',
         'responseCourseReviews',
         'notificationNewClass',
+        'notificationDeleteClass',
+        'notificationAssociateMaterial',
+        'notificationDisassociateMaterial',
     ],
     [
         'publishNewAccess',
         'responseAppClassesAndMaterials',
         'responseCourseReviews',
         'notificationNewClass',
+        'notificationDeleteClass',
+        'notificationAssociateMaterial',
+        'notificationDisassociateMaterial',
     ]
 )
 handleMicroserviceRoute(
@@ -136,7 +142,11 @@ handleMicroserviceRoute(
         'requestAppClassesAndMaterials',
         'publishNewAccess',
     ],
-    ['responseMaterialReviews', 'requestAppClassesAndMaterials']
+    [
+        'responseMaterialReviews',
+        'requestAppClassesAndMaterials',
+        'publishNewAccess',
+    ]
 )
 
 export default router
