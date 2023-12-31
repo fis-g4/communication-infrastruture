@@ -101,11 +101,13 @@ handleMicroserviceRoute(
         'publishNewAccess',
         'responseAppClassesAndMaterials',
         'responseCourseReviews',
+        'notificationNewClass',
     ],
     [
         'publishNewAccess',
         'responseAppClassesAndMaterials',
         'responseCourseReviews',
+        'notificationNewClass',
     ]
 )
 handleMicroserviceRoute(
