@@ -76,6 +76,12 @@ function handleMicroserviceRoute(
     })
 }
 
+router.get('/check', async (req: Request, res: Response) => {
+    return res
+        .status(200)
+        .json({ message: 'The users service is working properly!!' })
+})
+
 handleMicroserviceRoute(
     'users-microservice',
     'users_microservice',
