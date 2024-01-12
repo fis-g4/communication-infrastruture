@@ -13,7 +13,7 @@ env:
 
 jobs:
   deploy-flatter-to-gce:
-    name: Users Microservice Deployment to GCE
+    name: Communication Microservice Deployment to GCE
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
         working-directory: ./terraform
         run: |-
               mkdir .ssh
-              ssh-keygen -f .ssh/usersMicroservice -t rsa -N ""
+              ssh-keygen -f .ssh/communicationMicroservice -t rsa -N ""
               echo "$GCP_CREDENTIALS" | base64 --decode > GoogleCloudKey.json
               echo "$TERRAFORM_VARS" | base64 --decode > terraform.tfvars
               echo "$ENV_CONFIGURATION" | base64 --decode > .env.prod
@@ -53,7 +53,7 @@ jobs:
 
       - name: Terraform Destroy
         id: destroy
-        run: terraform destroy -target=google_compute_instance.users_service_instance -auto-approve -input=false -no-color
+        run: terraform destroy -target=google_compute_instance.communication_service_instance -auto-approve -input=false -no-color
         working-directory: ./terraform
         continue-on-error: true
 
