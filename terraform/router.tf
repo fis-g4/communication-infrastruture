@@ -1,7 +1,7 @@
 resource "google_compute_router" "fis_g4_router" {
   name    = var.router_name
   region  = var.region
-  network = "fis-g4-network-cd"
+  network = google_compute_network.fis_g4_network_cd.id
 
   bgp {
     asn = 64514
