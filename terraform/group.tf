@@ -24,6 +24,16 @@ resource "google_compute_instance_group" "communication_service_group" {
     port = "443"
   }
 
+  named_port {
+    name = "rabbit_amqp"
+    port = "5672"
+  }
+
+  named_port {
+    name = "rabbit_http"
+    port = "15672"
+  }
+
   zone = var.zone
 }
 
