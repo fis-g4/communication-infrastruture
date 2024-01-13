@@ -25,12 +25,12 @@ resource "google_compute_instance_group" "communication_service_group" {
   }
 
   named_port {
-    name = "rabbit_amqp"
+    name = "rabbit-amqp"
     port = "5672"
   }
 
   named_port {
-    name = "rabbit_http"
+    name = "rabbit-http"
     port = "15672"
   }
 
