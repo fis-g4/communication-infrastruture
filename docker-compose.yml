@@ -44,8 +44,6 @@ services:
       - communication-network
 
 volumes:
-  db:
-    name: communication-microservice-db
   rabbit_data:
 
 networks:

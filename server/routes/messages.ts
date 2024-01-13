@@ -79,7 +79,7 @@ function handleMicroserviceRoute(
 router.get('/check', async (req: Request, res: Response) => {
     return res
         .status(200)
-        .json({ message: 'The users service is working properly!!' })
+        .json({ message: 'The communication service is working properly!' })
 })
 
 handleMicroserviceRoute(
