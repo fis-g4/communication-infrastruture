@@ -12,7 +12,7 @@ resource "google_compute_instance" "communication_service_instance" {
   }
 
   network_interface {
-    network = google_compute_subnetwork.communication_microservice_subnetwork.name
+    subnetwork = google_compute_subnetwork.communication_microservice_subnetwork.id
 
     access_config {
     }
