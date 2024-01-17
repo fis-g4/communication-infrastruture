@@ -66,24 +66,6 @@
             }
         },
         {
-            "name": "mailbox_microservice",
-            "vhost": "/",
-            "durable": true,
-            "auto_delete": false,
-            "arguments": {
-                "x-message-ttl": 3600000
-            }
-        },
-        {
-            "name": "reviews_microservice",
-            "vhost": "/",
-            "durable": true,
-            "auto_delete": false,
-            "arguments": {
-                "x-message-ttl": 3600000
-            }
-        },
-        {
             "name": "courses_microservice",
             "vhost": "/",
             "durable": true,
@@ -127,6 +109,48 @@
             "arguments": {
                 "x-message-ttl": 3600000
             }
+        }
+    ],
+    "bindings": [
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "courses_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        },
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "payment_history_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        },
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "payment_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        },
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "access_control_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        },
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "learning_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
         }
     ]
 }
