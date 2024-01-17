@@ -9,7 +9,8 @@ services:
       - "15672:15672"
     volumes:
       - rabbit_data:/var/lib/rabbitmq
-      - ./definitions.json:/tmp/definitions.json
+      - ./rabbitmq/definitions.json:/tmp/definitions.json
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     environment:
       - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
     networks:

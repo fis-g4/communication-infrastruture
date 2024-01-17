@@ -15,7 +15,7 @@ async function connect() {
         channel = await connection.createChannel()
         await channel.assertExchange('communication_exchange', 'topic')
     } catch (error) {
-        console.log(error)
+        console.error(error)
         throw error
     }
 }
@@ -82,12 +82,7 @@ handleMicroserviceRoute(
     ['requestAppUsers', 'notificationNewPlanPayment', 'responseUserReviews'],
     ['notificationNewPlanPayment', 'responseUserReviews']
 )
-handleMicroserviceRoute(
-    'mailbox-microservice',
-    'mailbox_microservice',
-    ['responseAppUsers'],
-    ['responseAppUsers']
-)
+
 handleMicroserviceRoute(
     'reviews-microservice',
     'reviews_microservice',

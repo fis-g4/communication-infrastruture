@@ -1,4 +1,4 @@
-FROM nginx:1.19.0-alpine
+FROM nginx:1.24.0-alpine
 
 RUN apk update
 RUN apk add --no-cache git libc-dev gcc nano bash

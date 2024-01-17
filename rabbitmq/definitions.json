@@ -2,17 +2,20 @@
     "users": [
         {
             "name": "admin",
-            "password": "testing1",
+            "password_hash": "hu7opLsdSem2EdQ/zc7cwQcFPW64zJUgBPqYhRf3n/uXmGqQ",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
             "tags": "administrator"
         },
         {
             "name": "consumer",
-            "password": "testing1",
+            "password_hash": "NS95N+ab5GyCgZ+H5c19F2GNolOZsLDUjovopQSjeA06GhZX",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
             "tags": ""
         },
         {
             "name": "sender",
-            "password": "testing1",
+            "password_hash": "u9W6LlcZtqcK4MR480rAhayadSJvig1NZ3bYwXgZWnf42IMh",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
             "tags": ""
         }
     ],
@@ -75,25 +78,7 @@
             }
         },
         {
-            "name": "payment_history_microservice",
-            "vhost": "/",
-            "durable": true,
-            "auto_delete": false,
-            "arguments": {
-                "x-message-ttl": 3600000
-            }
-        },
-        {
             "name": "payment_microservice",
-            "vhost": "/",
-            "durable": true,
-            "auto_delete": false,
-            "arguments": {
-                "x-message-ttl": 3600000
-            }
-        },
-        {
-            "name": "access_control_microservice",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -123,23 +108,7 @@
         {
             "source": "communication_exchange",
             "vhost": "/",
-            "destination": "payment_history_microservice",
-            "destination_type": "queue",
-            "routing_key": "userRemoved",
-            "arguments": {}
-        },
-        {
-            "source": "communication_exchange",
-            "vhost": "/",
             "destination": "payment_microservice",
-            "destination_type": "queue",
-            "routing_key": "userRemoved",
-            "arguments": {}
-        },
-        {
-            "source": "communication_exchange",
-            "vhost": "/",
-            "destination": "access_control_microservice",
             "destination_type": "queue",
             "routing_key": "userRemoved",
             "arguments": {}
