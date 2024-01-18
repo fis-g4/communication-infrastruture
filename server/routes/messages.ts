@@ -100,6 +100,7 @@ router.post('/user/notification', (req: Request, res: Response) => {
 
 handleMicroserviceRoute('users-microservice', 'users_microservice', [
     'notificationNewPlanPayment',
+    'requestAppUsers',
 ])
 
 handleMicroserviceRoute('courses-microservice', 'courses_microservice', [
@@ -122,6 +123,7 @@ handleMicroserviceRoute('learning-microservice', 'learning_microservice', [
     'requestAppClassesAndMaterials',
     'publishNewMaterialAccess',
     'notificationDeleteCourse ',
+    'responseAppUsers',
 ])
 
 export default router
