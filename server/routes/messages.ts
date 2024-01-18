@@ -121,6 +121,7 @@ handleMicroserviceRoute('learning-microservice', 'learning_microservice', [
     'responseMaterialReviews',
     'requestAppClassesAndMaterials',
     'publishNewMaterialAccess',
+    'notificationDeleteCourse ',
 ])
 
 export default router
