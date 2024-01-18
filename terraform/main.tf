@@ -3,7 +3,7 @@ terraform {
     organization = "FIS-G4"
 
     workspaces {
-      name = "communication-service"
+      name = "communication-microservice"
     }
   }
   required_providers {
