@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express'
 import amqplib, { Channel, Connection } from 'amqplib'
 
+import { validateMessage } from '../utils/messageValidator'
+
 const router = express.Router()
 
 let channel: Channel, connection: Connection
@@ -72,6 +74,10 @@ function validateAndSend(
                 .status(400)
                 .send('The content must contain the message property')
         }
+        const validation = validateMessage(data.operationId, data.message)
+        if (!validation.isValid) {
+            return res.status(400).send(validation.errorMessage)
+        }
     } else {
         return res.status(400).send('Invalid operationId')
     }
@@ -89,9 +95,9 @@ function handleMicroserviceRoute(
 }
 
 router.get('/check', async (req: Request, res: Response) => {
-    return res
-        .status(200)
-        .json({ message: 'The communication service is working properly!' })
+    return res.status(200).json({
+        message: 'The communication microservice is working properly!',
+    })
 })
 
 router.post('/user/notification', (req: Request, res: Response) => {
@@ -130,6 +136,7 @@ handleMicroserviceRoute('learning-microservice', 'learning_microservice', [
     'publishNewMaterialAccess',
     'notificationDeleteCourse ',
     'responseAppUsers',
+    'notificationUserDeletion',
 ])
 
 export default router
