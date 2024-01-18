@@ -1,8 +1,8 @@
 import './loadEnvironment'
 
-const port = process.env.PORT ?? 8080
+const port = process.env.PORT ?? 8000
 const app = require('./app')
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Communication microservice listening on port ${port}`)
 })
