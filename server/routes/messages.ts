@@ -88,6 +88,12 @@ function handleMicroserviceRoute(
     })
 }
 
+router.get('/check', async (req: Request, res: Response) => {
+    return res
+        .status(200)
+        .json({ message: 'The communication service is working properly!' })
+})
+
 router.post('/user/notification', (req: Request, res: Response) => {
     validateAndSend(
         req,

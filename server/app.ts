@@ -3,7 +3,7 @@ import cors from 'cors'
 import messages from './routes/messages'
 
 const app: Express = express()
-const API_VERSION = '/api/v1'
+const API_VERSION = '/v1'
 
 app.use(express.json())
 app.use(cors())
