@@ -331,6 +331,125 @@ describe('Messages API', () => {
         })
     })
 
+    describe('POST /v1/messages/payments-microservice', () => {
+        let messageContent
+        const endpoint = paymentsMicroserviceEndpoint
+
+        it('should return 201: OK', async () => {
+            messageContent = {
+                operationId: 'notificationUserDeletion',
+                message: {
+                    username: 'testuser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 400: The content must be a JSON object', async () => {
+            messageContent = ''
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'The content must be a JSON object',
+            })
+        })
+
+        it('should return 400: The content must contain the operationId property', async () => {
+            messageContent = {
+                message: {
+                    username: 'testuser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'The content must contain the operationId property',
+            })
+        })
+
+        it('should return 400: The content must contain the message property', async () => {
+            messageContent = {
+                operationId: 'notificationUserDeletion',
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'The content must contain the message property',
+            })
+        })
+
+        it('should return 400: Invalid operation ids', async () => {
+            messageContent = {
+                operationId: 'notificationUserDeletionInvalid',
+                message: {
+                    username: 'testuser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid operationId',
+            })
+        })
+
+        it('should return 403: Unauthorized', async () => {
+            messageContent = {
+                operationId: 'notificationUserDeletion',
+                message: {
+                    username: 'testuser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(403)
+            expect(response.body).toEqual({
+                error: 'Unauthorized. You need a valid API key',
+            })
+        })
+    })
+
     describe('POST /v1/messages/user/notification', () => {
         let messageContent
         const endpoint = userDeletionEndpoint

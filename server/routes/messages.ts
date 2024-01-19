@@ -52,7 +52,7 @@ handleMicroserviceRoute('courses-microservice', 'courses_microservice', [
     'notificationUserDeletion',
 ])
 
-handleMicroserviceRoute('payment-microservice', 'payment_microservice', [
+handleMicroserviceRoute('payments-microservice', 'payments_microservice', [
     'notificationUserDeletion',
 ])
 

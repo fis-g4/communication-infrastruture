@@ -78,7 +78,7 @@
             }
         },
         {
-            "name": "payment_microservice",
+            "name": "payments_microservice",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -108,7 +108,7 @@
         {
             "source": "communication_exchange",
             "vhost": "/",
-            "destination": "payment_microservice",
+            "destination": "payments_microservice",
             "destination_type": "queue",
             "routing_key": "userRemoved",
             "arguments": {}
