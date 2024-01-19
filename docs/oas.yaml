@@ -1,0 +1,660 @@
+---
+openapi: 3.0.0
+info:
+  title: Communication Microservice
+  description: |
+    This microservice is responsible for managing the communication between microservices.  You can find out more about Learning Microservice at [GitHub repository](https://github.com/fis-g4/learning-microservice).
+  contact:
+    email: migromarj@alum.us.es
+  license:
+    name: MIT
+    url: https://github.com/fis-g4/learning-microservice/blob/main/LICENSE
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/mrarjona/communication-microservice/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://javiercavlop.com/v1/messages
+tags:
+- name: messages
+  description: Operations about messages
+paths:
+  /check:
+    get:
+      tags:
+      - messages
+      summary: Check if the communication microservice is working
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: The communication microservice is working properly!
+  /user/notification:
+    post:
+      tags:
+      - messages
+      summary: Send user notification
+      description: |
+        This endpoint is used to send a notification to a user.
+
+        Available Operation IDs:
+        - `notificationUserDeletion`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUserDeletion'
+            example:
+              operationId: notificationUserDeletion
+              message:
+                username: exampleUser
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Message sent successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                noData:
+                  value:
+                    error: No data was sent
+                notJson:
+                  value:
+                    error: The content must be a JSON object
+                missingOperationId:
+                  value:
+                    error: The content must contain the operationId property
+                missingMessage:
+                  value:
+                    error: The content must contain the message property
+                invalidOperationId:
+                  value:
+                    error: Invalid operationId
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Unauthorized. You need a valid API key
+      security:
+      - ApiKeyAuth: []
+  /users-microservice:
+    post:
+      tags:
+      - messages
+      summary: Send a message to the Users microservice
+      description: |
+        This endpoint is used to send a message to the Users microservice.
+
+        The request must include a valid API key in the 'x-api-key' header. The content type must be 'application/json'. The request body must contain 'operationId' and 'message' properties. The 'operationId' must be one of the available operation IDs. The 'message' must be a valid message for the operation.
+
+        Available Operation IDs for Users Microservice:
+        - `notificationNewPlanPayment`
+        - `requestAppUsers`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usersmicroservice_body'
+            examples:
+              notificationNewPlanPayment:
+                value:
+                  operationId: notificationNewPlanPayment
+                  message:
+                    username: exampleUser
+                    plan: PRO
+              requestAppUsers:
+                value:
+                  operationId: requestAppUsers
+                  message:
+                    usernames:
+                    - exampleUser1
+                    - exampleUser2
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Message sent successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                noData:
+                  value:
+                    error: No data was sent
+                notJson:
+                  value:
+                    error: The content must be a JSON object
+                missingOperationId:
+                  value:
+                    error: The content must contain the operationId property
+                missingMessage:
+                  value:
+                    error: The content must contain the message property
+                invalidOperationId:
+                  value:
+                    error: Invalid operationId
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Unauthorized. You need a valid API key
+      security:
+      - ApiKeyAuth: []
+  /courses-microservice:
+    post:
+      tags:
+      - messages
+      summary: Send a message to the Courses microservice
+      description: |
+        This endpoint is used to send a message to the Courses microservice.
+
+        The request must include a valid API key in the 'x-api-key' header. The content type must be 'application/json'. The request body must contain 'operationId' and 'message' properties. The 'operationId' must be one of the available operation IDs. The 'message' must be a valid message for the operation.
+
+        Available Operation IDs for Courses Microservice:
+        - `publishNewCourseAccess`
+        - `responseAppClassesAndMaterials`
+        - `notificationNewClass`
+        - `notificationDeleteClass`
+        - `notificationAssociateMaterial`
+        - `notificationDisassociateMaterial`
+        - `requestMaterialReviews`
+        - `notificationUserDeletion`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/coursesmicroservice_body'
+            examples:
+              publishNewCourseAccess:
+                value:
+                  operationId: publishNewCourseAccess
+                  message:
+                    username: exampleUser
+                    courseId: course123
+              responseAppClassesAndMaterials:
+                value:
+                  operationId: responseAppClassesAndMaterials
+                  message:
+                    courseId: course123
+                    classIds:
+                    - class1
+                    - class2
+                    materialIds:
+                    - material1
+                    - material2
+              notificationNewClass:
+                value:
+                  operationId: notificationNewClass
+                  message:
+                    classId: class1
+                    courseId: course123
+              notificationDeleteClass:
+                value:
+                  operationId: notificationDeleteClass
+                  message:
+                    classId: class1
+                    courseId: course123
+              notificationAssociateMaterial:
+                value:
+                  operationId: notificationAssociateMaterial
+                  message:
+                    materialId: material1
+                    courseId: course123
+              notificationDisassociateMaterial:
+                value:
+                  operationId: notificationDisassociateMaterial
+                  message:
+                    materialId: material1
+                    courseId: course123
+              requestMaterialReviews:
+                value:
+                  operationId: requestMaterialReviews
+                  message:
+                    materialId: material1
+              notificationUserDeletion:
+                value:
+                  operationId: notificationUserDeletion
+                  message:
+                    username: exampleUser
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Message sent successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                noData:
+                  value:
+                    error: No data was sent
+                notJson:
+                  value:
+                    error: The content must be a JSON object
+                missingOperationId:
+                  value:
+                    error: The content must contain the operationId property
+                missingMessage:
+                  value:
+                    error: The content must contain the message property
+                invalidOperationId:
+                  value:
+                    error: Invalid operationId
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Unauthorized. You need a valid API key
+      security:
+      - ApiKeyAuth: []
+  /payments-microservice:
+    post:
+      tags:
+      - messages
+      summary: Send a message to the Payments microservice
+      description: |
+        This endpoint is used to send a message to the Payments microservice.
+
+        The request must include a valid API key in the 'x-api-key' header. The content type must be 'application/json'. The request body must contain 'operationId' and 'message' properties. The 'operationId' must be one of the available operation IDs. The 'message' must be a valid message for the operation.
+
+        Available Operation IDs for Payments Microservice:
+        - `notificationUserDeletion`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUserDeletion'
+            example:
+              operationId: notificationUserDeletion
+              message:
+                username: exampleUser
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Message sent successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                noData:
+                  value:
+                    error: No data was sent
+                notJson:
+                  value:
+                    error: The content must be a JSON object
+                missingOperationId:
+                  value:
+                    error: The content must contain the operationId property
+                missingMessage:
+                  value: error
+      security:
+      - ApiKeyAuth: []
+  /learning-microservice:
+    post:
+      tags:
+      - messages
+      summary: Send a message to the Learning microservice
+      description: |
+        This endpoint is used to send a message to the Learning microservice.
+
+        The request must include a valid API key in the 'x-api-key' header. The content type must be 'application/json'. The request body must contain 'operationId' and 'message' properties. The 'operationId' must be one of the available operation IDs. The 'message' must be a valid message for the operation.
+
+        Available Operation IDs for Learning Microservice:
+        - `responseMaterialReviews`
+        - `requestAppClassesAndMaterials`
+        - `publishNewMaterialAccess`
+        - `notificationDeleteCourse`
+        - `responseAppUsers`
+        - `notificationUserDeletion`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/learningmicroservice_body'
+            examples:
+              responseMaterialReviews:
+                value:
+                  operationId: responseMaterialReviews
+                  message:
+                    materialId: material123
+                    review: 4
+              requestAppClassesAndMaterials:
+                value:
+                  operationId: requestAppClassesAndMaterials
+                  message:
+                    courseId: course123
+                    classIds:
+                    - class1
+                    - class2
+                    materialIds:
+                    - material1
+                    - material2
+              publishNewMaterialAccess:
+                value:
+                  operationId: publishNewMaterialAccess
+                  message:
+                    username: exampleUser
+                    materialId: material123
+              notificationDeleteCourse:
+                value:
+                  operationId: notificationDeleteCourse
+                  message:
+                    courseId: course123
+              responseAppUsers:
+                value:
+                  operationId: responseAppUsers
+                  message:
+                    usernames:
+                    - exampleUser1
+                    - exampleUser2
+              notificationUserDeletion:
+                value:
+                  operationId: notificationUserDeletion
+                  message:
+                    username: exampleUser
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Message sent successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                noData:
+                  value:
+                    error: No data was sent
+                notJson:
+                  value:
+                    error: The content must be a JSON object
+                missingOperationId:
+                  value:
+                    error: The content must contain the operationId property
+                missingMessage:
+                  value:
+                    error: The content must contain the message property
+                invalidOperationId:
+                  value:
+                    error: Invalid operationId
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Unauthorized. You need a valid API key
+      security:
+      - ApiKeyAuth: []
+components:
+  schemas:
+    NotificationNewPlanPayment:
+      required:
+      - plan
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        plan:
+          type: string
+          enum:
+          - FREE
+          - ADVANCED
+          - PRO
+    PublishNewCourseAccess:
+      required:
+      - courseId
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        courseId:
+          type: string
+    NotificationUserDeletion:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+    RequestAppUsers:
+      type: array
+      items:
+        type: string
+    PublishNewMaterialAccess:
+      required:
+      - materialId
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        materialId:
+          type: string
+    ResponseAppClassesAndMaterials:
+      required:
+      - classIds
+      - courseId
+      - materialIds
+      type: object
+      properties:
+        courseId:
+          type: string
+        classIds:
+          type: array
+          items:
+            type: string
+        materialIds:
+          type: array
+          items:
+            type: string
+    NotificationNewClass:
+      required:
+      - classId
+      - courseId
+      type: object
+      properties:
+        classId:
+          type: string
+        courseId:
+          type: string
+    NotificationDeleteClass:
+      required:
+      - classId
+      type: object
+      properties:
+        classId:
+          type: string
+    NotificationAssociateMaterial:
+      required:
+      - courseId
+      - materialId
+      type: object
+      properties:
+        materialId:
+          type: string
+        courseId:
+          type: string
+    NotificationDisassociateMaterial:
+      required:
+      - courseId
+      - materialId
+      type: object
+      properties:
+        materialId:
+          type: string
+        courseId:
+          type: string
+    RequestMaterialReviews:
+      required:
+      - materialId
+      type: object
+      properties:
+        materialId:
+          type: string
+    ResponseMaterialReviews:
+      required:
+      - materialId
+      - review
+      type: object
+      properties:
+        materialId:
+          type: string
+        review:
+          maximum: 5
+          minimum: 1
+          type: integer
+          nullable: true
+    ResponseAppUsers:
+      required:
+      - users
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseAppUsers_users'
+    RequestAppClassesAndMaterials:
+      required:
+      - courseId
+      type: object
+      properties:
+        courseId:
+          type: string
+    NotificationDeleteCourse:
+      required:
+      - classIds
+      - courseId
+      - materialIds
+      type: object
+      properties:
+        courseId:
+          type: string
+        classIds:
+          type: array
+          items:
+            type: string
+        materialIds:
+          type: array
+          items:
+            type: string
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+    usersmicroservice_body:
+      oneOf:
+      - $ref: '#/components/schemas/NotificationNewPlanPayment'
+      - $ref: '#/components/schemas/RequestAppUsers'
+    coursesmicroservice_body:
+      oneOf:
+      - $ref: '#/components/schemas/PublishNewCourseAccess'
+      - $ref: '#/components/schemas/ResponseAppClassesAndMaterials'
+      - $ref: '#/components/schemas/NotificationNewClass'
+      - $ref: '#/components/schemas/NotificationDeleteClass'
+      - $ref: '#/components/schemas/NotificationAssociateMaterial'
+      - $ref: '#/components/schemas/NotificationDisassociateMaterial'
+      - $ref: '#/components/schemas/RequestMaterialReviews'
+      - $ref: '#/components/schemas/NotificationUserDeletion'
+    learningmicroservice_body:
+      oneOf:
+      - $ref: '#/components/schemas/ResponseMaterialReviews'
+      - $ref: '#/components/schemas/RequestAppClassesAndMaterials'
+      - $ref: '#/components/schemas/PublishNewMaterialAccess'
+      - $ref: '#/components/schemas/NotificationDeleteCourse'
+      - $ref: '#/components/schemas/ResponseAppUsers'
+      - $ref: '#/components/schemas/NotificationUserDeletion'
+    ResponseAppUsers_users:
+      required:
+      - email
+      - firstName
+      - lastName
+      - plan
+      - profilePicture
+      - username
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        profilePicture:
+          type: string
+        plan:
+          type: string
+          enum:
+          - FREE
+          - ADVANCED
+          - PRO
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
