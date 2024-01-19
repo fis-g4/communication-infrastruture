@@ -255,25 +255,6 @@ function validateRequestAppClassesAndMaterials(message: any): ValidationResult {
                 'Invalid message for operationId: requestAppClassesAndMaterials. Missing courseId',
         }
     }
-
-    if (!Array.isArray(message.classIds) || message.classIds.length === 0) {
-        return {
-            isValid: false,
-            errorMessage:
-                'Invalid message for operationId: requestAppClassesAndMaterials. Missing classIds',
-        }
-    }
-
-    if (
-        !Array.isArray(message.materialIds) ||
-        message.materialIds.length === 0
-    ) {
-        return {
-            isValid: false,
-            errorMessage:
-                'Invalid message for operationId: requestAppClassesAndMaterials. Missing materialIds',
-        }
-    }
     return { isValid: true }
 }
 
@@ -282,7 +263,7 @@ function validateNotificationDeleteCourse(message: any): ValidationResult {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: requestAppClassesAndMaterials. Missing courseId',
+                'Invalid message for operationId: notificationDeleteCourse. Missing courseId',
         }
     }
 
@@ -290,7 +271,7 @@ function validateNotificationDeleteCourse(message: any): ValidationResult {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: requestAppClassesAndMaterials. Missing classIds',
+                'Invalid message for operationId: notificationDeleteCourse. Missing classIds',
         }
     }
 
@@ -301,7 +282,7 @@ function validateNotificationDeleteCourse(message: any): ValidationResult {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: requestAppClassesAndMaterials. Missing materialIds',
+                'Invalid message for operationId: notificationDeleteCourse. Missing materialIds',
         }
     }
 
