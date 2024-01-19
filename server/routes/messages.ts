@@ -52,7 +52,7 @@ handleMicroserviceRoute('courses-microservice', 'courses_microservice', [
     'notificationUserDeletion',
 ])
 
-handleMicroserviceRoute('payment-microservice', 'payment_microservice', [
+handleMicroserviceRoute('payments-microservice', 'payments_microservice', [
     'notificationUserDeletion',
 ])
 
@@ -60,7 +60,7 @@ handleMicroserviceRoute('learning-microservice', 'learning_microservice', [
     'responseMaterialReviews',
     'requestAppClassesAndMaterials',
     'publishNewMaterialAccess',
-    'notificationDeleteCourse ',
+    'notificationDeleteCourse',
     'responseAppUsers',
     'notificationUserDeletion',
 ])

@@ -14,7 +14,6 @@ function sendAndRespond(
 ) {
     const message = { ...data, date: new Date() }
     const buffer = Buffer.from(JSON.stringify(message))
-
     if (queueName) {
         channel.sendToQueue(queueName, buffer)
     } else if (topic) {
@@ -42,29 +41,30 @@ export function validateAndSend(
     }
     const data = req.body
     if (data.length === 0) {
-        return res.status(400).send('No data was sent')
+        return res.status(400).send({ error: 'No data was sent' })
     }
     if (req.get('Content-Type') !== 'application/json') {
-        return res.status(400).send('The content must be a JSON object')
-    }
-    if (!data.operationId) {
         return res
             .status(400)
-            .send('The content must contain the operationId property')
+            .send({ error: 'The content must be a JSON object' })
     }
-
+    if (!data.operationId) {
+        return res.status(400).send({
+            error: 'The content must contain the operationId property',
+        })
+    }
     if (validOperationIds.includes(data.operationId)) {
         if (!data.message) {
-            return res
-                .status(400)
-                .send('The content must contain the message property')
+            return res.status(400).send({
+                error: 'The content must contain the message property',
+            })
         }
         const validation = validateMessage(data.operationId, data.message)
         if (!validation.isValid) {
-            return res.status(400).send(validation.errorMessage)
+            return res.status(400).send({ error: validation.errorMessage })
         }
     } else {
-        return res.status(400).send('Invalid operationId')
+        return res.status(400).send({ error: 'Invalid operationId' })
     }
     sendAndRespond(data, res, channel, queueName, topic)
 }

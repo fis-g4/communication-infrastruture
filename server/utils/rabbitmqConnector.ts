@@ -11,7 +11,6 @@ export class RabbitMQConnector {
             this.channel = await this.connection.createChannel()
             await this.channel.assertExchange('communication_exchange', 'topic')
         } catch (error) {
-            console.error(error)
             throw error
         }
     }
