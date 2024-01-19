@@ -9,12 +9,6 @@ on:
     pull_request:
         branches: [main, develop]
 
-env:
-    JWT_SECRET: ${{secrets.JWT_SECRET}}
-    GCF_GENERATE_TOKEN_ENDPOINT: ${{secrets.GCF_GENERATE_TOKEN_ENDPOINT}}
-    GCF_VERIFY_TOKEN_ENDPOINT: ${{secrets.GCF_VERIFY_TOKEN_ENDPOINT}}
-    GCF_GET_PAYLOAD_FROM_TOKEN_ENDPOINT: ${{secrets.GCF_GET_PAYLOAD_FROM_TOKEN_ENDPOINT}}
-
 jobs:
     build:
         runs-on: ubuntu-latest
