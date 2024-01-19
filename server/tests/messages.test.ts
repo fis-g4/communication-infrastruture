@@ -73,7 +73,7 @@ describe('Messages API', () => {
         let messageContent
         const endpoint = usersMicroserviceEndpoint
 
-        it('should return 201: OK', async () => {
+        it('should return 201: OK - requestAppUsers', async () => {
             messageContent = {
                 operationId: 'requestAppUsers',
                 message: {
@@ -83,6 +83,28 @@ describe('Messages API', () => {
                         'testuser3',
                         'testuser4',
                     ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - notificationNewPlanPayment', async () => {
+            messageContent = {
+                operationId: 'notificationNewPlanPayment',
+                message: {
+                    username: 'testUser',
+                    plan: 'FREE',
                 },
             }
 
@@ -182,7 +204,113 @@ describe('Messages API', () => {
             })
         })
 
-        it('should return 403: Unauthorized', async () => {
+        it('should return 400: Invalid usernames type - requestAppUsers', async () => {
+            messageContent = {
+                operationId: 'requestAppUsers',
+                message: {
+                    usernames: 'testuser1',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: requestAppUsers. Missing usernames',
+            })
+        })
+
+        it('should return 400: No username - requestAppUsers', async () => {
+            messageContent = {
+                operationId: 'requestAppUsers',
+                message: {
+                    usernames: [],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: requestAppUsers. Missing usernames',
+            })
+        })
+
+        it('should return 400: Missing username - notificationNewPlanPayment', async () => {
+            messageContent = {
+                operationId: 'notificationNewPlanPayment',
+                message: {
+                    plan: 'FREE',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO)',
+            })
+        })
+
+        it('should return 400: Missing plan - notificationNewPlanPayment', async () => {
+            messageContent = {
+                operationId: 'notificationNewPlanPayment',
+                message: {
+                    username: 'testUser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO)',
+            })
+        })
+
+        it('should return 400: Missing username - notificationNewPlanPayment', async () => {
+            messageContent = {
+                operationId: 'notificationNewPlanPayment',
+                message: {
+                    username: 'testUser',
+                    plan: 'FREEE',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO)',
+            })
+        })
+
+        it('should return 403: Unauthorized - requestAppUsers', async () => {
             messageContent = {
                 operationId: 'requestAppUsers',
                 message: {
@@ -212,7 +340,7 @@ describe('Messages API', () => {
         let messageContent
         const endpoint = coursesMicroserviceEndpoint
 
-        it('should return 201: OK', async () => {
+        it('should return 201: OK - publishNewCourseAccess', async () => {
             messageContent = {
                 operationId: 'publishNewCourseAccess',
                 message: {
@@ -227,6 +355,119 @@ describe('Messages API', () => {
                 .send(messageContent)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - responseAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'responseAppClassesAndMaterials',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - notificationNewClass', async () => {
+            messageContent = {
+                operationId: 'notificationNewClass',
+                message: {
+                    classId: 'nfjwknfwklejnfwekljnfwe',
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - notificationDeleteClass', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteClass',
+                message: {
+                    classId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - notificationAssociateMaterial', async () => {
+            messageContent = {
+                operationId: 'notificationAssociateMaterial',
+                message: {
+                    materialId: 'nfjwknfwklejnfwekljnfwe',
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - notificationDisassociateMaterial', async () => {
+            messageContent = {
+                operationId: 'notificationDisassociateMaterial',
+                message: {
+                    materialId: 'nfjwknfwklejnfwekljnfwe',
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - requestMaterialReviews', async () => {
+            messageContent = {
+                operationId: 'requestMaterialReviews',
+                message: {
+                    materialId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
 
             expect(response.status).toBe(201)
             expect(response.body).toEqual({
@@ -309,6 +550,300 @@ describe('Messages API', () => {
             })
         })
 
+        it('should return 400: Missing username - publishNewCourseAccess', async () => {
+            messageContent = {
+                operationId: 'publishNewCourseAccess',
+                message: {
+                    username: 'testuser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: publishNewCourseAccess. Missing username or courseId.',
+            })
+        })
+
+        it('should return 400: Missing courseId - publishNewCourseAccess', async () => {
+            messageContent = {
+                operationId: 'publishNewCourseAccess',
+                message: {
+                    courseId: '3h4uf8h8f',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: publishNewCourseAccess. Missing username or courseId.',
+            })
+        })
+
+        it('should return 400: Missing courseId - responseAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'responseAppClassesAndMaterials',
+                message: {
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppClassesAndMaterials. Missing courseId.',
+            })
+        })
+
+        it('should return 400: Missing classIds - responseAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'responseAppClassesAndMaterials',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppClassesAndMaterials. Missing classIds.',
+            })
+        })
+
+        it('should return 400: classIds 0 size - responseAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'responseAppClassesAndMaterials',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: [],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppClassesAndMaterials. Missing classIds.',
+            })
+        })
+
+        it('should return 400: Missing materialIds - responseAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'responseAppClassesAndMaterials',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppClassesAndMaterials. Missing materialIds.',
+            })
+        })
+
+        it('should return 400: materialIds 0 size - responseAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'responseAppClassesAndMaterials',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: [],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppClassesAndMaterials. Missing materialIds.',
+            })
+        })
+
+        it('should return 400: Missing classId - notificationNewClass', async () => {
+            messageContent = {
+                operationId: 'notificationNewClass',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationNewClass. Missing classId or courseId.',
+            })
+        })
+
+        it('should return 400: Missing courseId - notificationNewClass', async () => {
+            messageContent = {
+                operationId: 'notificationNewClass',
+                message: {
+                    classId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationNewClass. Missing classId or courseId.',
+            })
+        })
+
+        it('should return 400: Missing classId - notificationDeleteClass', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteClass',
+                message: {},
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDeleteClass. Missing classId.',
+            })
+        })
+
+        it('should return 400: Missing courseId - notificationAssociateMaterial', async () => {
+            messageContent = {
+                operationId: 'notificationAssociateMaterial',
+                message: {
+                    materialId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationAssociateMaterial. Missing materialId or courseId.',
+            })
+        })
+
+        it('should return 400: Missing materialId - notificationAssociateMaterial', async () => {
+            messageContent = {
+                operationId: 'notificationAssociateMaterial',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationAssociateMaterial. Missing materialId or courseId.',
+            })
+        })
+
+        it('should return 400: Missing classId - notificationDisassociateMaterial', async () => {
+            messageContent = {
+                operationId: 'notificationDisassociateMaterial',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDisassociateMaterial. Missing materialId or courseId.',
+            })
+        })
+
+        it('should return 400: Missing courseId - notificationDisassociateMaterial', async () => {
+            messageContent = {
+                operationId: 'notificationDisassociateMaterial',
+                message: {
+                    materialId: 'nfjwknfwklejnfwekljnfwe',
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDisassociateMaterial. Missing materialId or courseId.',
+            })
+        })
+
+        it('should return 400: Missing materialId - requestMaterialReviews', async () => {
+            messageContent = {
+                operationId: 'requestMaterialReviews',
+                message: {},
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: requestMaterialReviews. Missing materialId',
+            })
+        })
+
         it('should return 403: Unauthorized', async () => {
             messageContent = {
                 operationId: 'publishNewCourseAccess',
@@ -335,7 +870,7 @@ describe('Messages API', () => {
         let messageContent
         const endpoint = paymentsMicroserviceEndpoint
 
-        it('should return 201: OK', async () => {
+        it('should return 201: OK - notificationUserDeletion', async () => {
             messageContent = {
                 operationId: 'notificationUserDeletion',
                 message: {
@@ -429,6 +964,27 @@ describe('Messages API', () => {
             })
         })
 
+        it('should return 400: Missing username - notificationUserDeletion', async () => {
+            messageContent = {
+                operationId: 'notificationUserDeletion',
+                message: {
+                    usernam3: 'testuser',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationUserDeletion. Missing username',
+            })
+        })
+
         it('should return 403: Unauthorized', async () => {
             messageContent = {
                 operationId: 'notificationUserDeletion',
@@ -454,7 +1010,7 @@ describe('Messages API', () => {
         let messageContent
         const endpoint = learningMicroserviceEndpoint
 
-        it('should return 201: OK', async () => {
+        it('should return 201: OK - responseMaterialReviews', async () => {
             messageContent = {
                 operationId: 'responseMaterialReviews',
                 message: {
@@ -469,6 +1025,94 @@ describe('Messages API', () => {
                 .send(messageContent)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - requestAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'requestAppClassesAndMaterials',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - publishNewMaterialAccess', async () => {
+            messageContent = {
+                operationId: 'publishNewMaterialAccess',
+                message: {
+                    username: 'testuser',
+                    materialId: '3h4uf8h8f',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - notificationDeleteCourse', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteCourse',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+
+            expect(response.status).toBe(201)
+            expect(response.body).toEqual({
+                message: 'Message sent successfully',
+            })
+        })
+
+        it('should return 201: OK - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            lastName: 'User',
+                            email: 'testuser@mail.com',
+                            username: 'testuser',
+                            profilePicture: 'https://testuser.com',
+                            plan: 'FREE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
 
             expect(response.status).toBe(201)
             expect(response.body).toEqual({
@@ -551,6 +1195,511 @@ describe('Messages API', () => {
             })
         })
 
+        it('should return 400: Missing materialId - responseMaterialReviews', async () => {
+            messageContent = {
+                operationId: 'responseMaterialReviews',
+                message: {
+                    review: 4,
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseMaterialReviews. Missing materialId or review',
+            })
+        })
+
+        it('should return 400: Missing review - responseMaterialReviews', async () => {
+            messageContent = {
+                operationId: 'responseMaterialReviews',
+                message: {
+                    materialId: 'n4hf8vjsd78xdj',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseMaterialReviews. Missing materialId or review',
+            })
+        })
+
+        it('should return 400: Invalid review value - responseMaterialReviews', async () => {
+            messageContent = {
+                operationId: 'responseMaterialReviews',
+                message: {
+                    materialId: 'n4hf8vjsd78xdj',
+                    review: '4',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be an integer between 1 and 5 or null)',
+            })
+        })
+
+        it('should return 400: Invalid review range - responseMaterialReviews', async () => {
+            messageContent = {
+                operationId: 'responseMaterialReviews',
+                message: {
+                    materialId: 'n4hf8vjsd78xdj',
+                    review: 8,
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be an integer between 1 and 5 or null)',
+            })
+        })
+
+        it('should return 400: Missing courseId - requestAppClassesAndMaterials', async () => {
+            messageContent = {
+                operationId: 'requestAppClassesAndMaterials',
+                message: {
+                    cours3Id: 'fsdjkfhsd98f7sdnskjld',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: requestAppClassesAndMaterials. Missing courseId',
+            })
+        })
+
+        it('should return 400: Missing username - publishNewMaterialAccess', async () => {
+            messageContent = {
+                operationId: 'publishNewMaterialAccess',
+                message: {
+                    username: 'test-user',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: publishNewMaterialAccess. Missing username or materialId',
+            })
+        })
+
+        it('should return 400: Missing materialId - publishNewMaterialAccess', async () => {
+            messageContent = {
+                operationId: 'publishNewMaterialAccess',
+                message: {
+                    materialId: 'fdg54hsd98f7sdnskjld',
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: publishNewMaterialAccess. Missing username or materialId',
+            })
+        })
+
+        it('should return 400: Missing courseId - notificationDeleteCourse', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteCourse',
+                message: {
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDeleteCourse. Missing courseId.',
+            })
+        })
+
+        it('should return 400: Missing classIds - notificationDeleteCourse', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteCourse',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDeleteCourse. Missing classIds.',
+            })
+        })
+
+        it('should return 400: classIds 0 size - notificationDeleteCourse', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteCourse',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: [],
+                    materialIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDeleteCourse. Missing classIds.',
+            })
+        })
+
+        it('should return 400: Missing materialIds - notificationDeleteCourse', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteCourse',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDeleteCourse. Missing materialIds.',
+            })
+        })
+
+        it('should return 400: materialIds 0 size - notificationDeleteCourse', async () => {
+            messageContent = {
+                operationId: 'notificationDeleteCourse',
+                message: {
+                    courseId: 'nfjwknfwklejnfwekljnfwe',
+                    classIds: ['fnsjdkh', '8927fhjkd'],
+                    materialIds: [],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: notificationDeleteCourse. Missing materialIds.',
+            })
+        })
+
+        it('should return 400: users 0 size - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing users.',
+            })
+        })
+
+        it('should return 400: Missing users - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {},
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing users.',
+            })
+        })
+
+        it('should return 400: Missing user firstName - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            lastName: 'User',
+                            email: 'testuser@mail.com',
+                            username: 'testuser',
+                            profilePicture: 'https://testuser.com',
+                            plan: 'FREE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
+        it('should return 400: Missing user lastName - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            email: 'testuser@mail.com',
+                            username: 'testuser',
+                            profilePicture: 'https://testuser.com',
+                            plan: 'FREE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
+        it('should return 400: Missing user email - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            lastName: 'User',
+                            username: 'testuser',
+                            profilePicture: 'https://testuser.com',
+                            plan: 'FREE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
+        it('should return 400: Missing user username - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            lastName: 'User',
+                            email: 'testuser@mail.com',
+                            profilePicture: 'https://testuser.com',
+                            plan: 'FREE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
+        it('should return 400: Missing user profilePicture - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            lastName: 'User',
+                            email: 'testuser@mail.com',
+                            username: 'testuser',
+                            plan: 'FREE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
+        it('should return 400: Missing user plan - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            lastName: 'User',
+                            email: 'testuser@mail.com',
+                            username: 'testuser',
+                            profilePicture: 'https://testuser.com',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
+        it('should return 400: Invalid user plan - responseAppUsers', async () => {
+            messageContent = {
+                operationId: 'responseAppUsers',
+                message: {
+                    users: [
+                        {
+                            firstName: 'Test',
+                            lastName: 'User',
+                            email: 'testuser@mail.com',
+                            username: 'testuser',
+                            profilePicture: 'https://testuser.com',
+                            plan: 'FREEE',
+                        },
+                    ],
+                },
+            }
+
+            const response = await request(app)
+                .post(endpoint)
+                .set('x-api-key', `${API_KEY}`)
+                .send(messageContent)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+
+            expect(response.status).toBe(400)
+            expect(response.body).toEqual({
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+            })
+        })
+
         it('should return 403: Unauthorized', async () => {
             messageContent = {
                 operationId: 'responseMaterialReviews',
@@ -577,7 +1726,7 @@ describe('Messages API', () => {
         let messageContent
         const endpoint = userDeletionEndpoint
 
-        it('should return 201: OK', async () => {
+        it('should return 201: OK - notificationUserDeletion', async () => {
             messageContent = {
                 operationId: 'notificationUserDeletion',
                 message: {

@@ -61,7 +61,7 @@ export function validateAndSend(
         }
         const validation = validateMessage(data.operationId, data.message)
         if (!validation.isValid) {
-            return res.status(400).send(validation.errorMessage)
+            return res.status(400).send({ error: validation.errorMessage })
         }
     } else {
         return res.status(400).send({ error: 'Invalid operationId' })
