@@ -490,9 +490,7 @@ components:
           type: string
     ResponseAppClassesAndMaterials:
       required:
-      - classIds
       - courseId
-      - materialIds
       type: object
       properties:
         courseId:
@@ -580,9 +578,7 @@ components:
           type: string
     NotificationDeleteCourse:
       required:
-      - classIds
       - courseId
-      - materialIds
       type: object
       properties:
         courseId:
