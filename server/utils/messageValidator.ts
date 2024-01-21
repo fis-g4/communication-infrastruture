@@ -69,12 +69,12 @@ function validateNotificationNewPlanPayment(message: any): ValidationResult {
     if (
         !message['username'] ||
         !message['plan'] ||
-        !['FREE', 'ADVANCED', 'PRO'].includes(message['plan'])
+        !['BASIC', 'ADVANCED', 'PRO'].includes(message['plan'])
     ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO).',
+                'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (BASIC, ADVANCED, PRO).',
         }
     }
     return { isValid: true }
@@ -242,13 +242,13 @@ function validateResponseAppUsers(message: any): ValidationResult {
                 user['email'] &&
                 user['profilePicture'] &&
                 user['plan'] &&
-                ['FREE', 'ADVANCED', 'PRO'].includes(user['plan'])
+                ['BASIC', 'ADVANCED', 'PRO'].includes(user['plan'])
         )
     ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
         }
     }
     return { isValid: true }

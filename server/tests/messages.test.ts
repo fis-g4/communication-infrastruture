@@ -104,7 +104,7 @@ describe('Messages API', () => {
                 operationId: 'notificationNewPlanPayment',
                 message: {
                     username: 'testUser',
-                    plan: 'FREE',
+                    plan: 'BASIC',
                 },
             }
 
@@ -250,7 +250,7 @@ describe('Messages API', () => {
             messageContent = {
                 operationId: 'notificationNewPlanPayment',
                 message: {
-                    plan: 'FREE',
+                    plan: 'BASIC',
                 },
             }
 
@@ -263,7 +263,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO).',
+                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (BASIC, ADVANCED, PRO).',
             })
         })
 
@@ -284,7 +284,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO).',
+                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (BASIC, ADVANCED, PRO).',
             })
         })
 
@@ -293,7 +293,7 @@ describe('Messages API', () => {
                 operationId: 'notificationNewPlanPayment',
                 message: {
                     username: 'testUser',
-                    plan: 'FREEE',
+                    plan: 'BASICE',
                 },
             }
 
@@ -306,7 +306,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO).',
+                error: 'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (BASIC, ADVANCED, PRO).',
             })
         })
 
@@ -1013,7 +1013,7 @@ describe('Messages API', () => {
                             email: 'testuser@mail.com',
                             username: 'testuser',
                             profilePicture: 'https://testuser.com',
-                            plan: 'FREE',
+                            plan: 'BASIC',
                         },
                     ],
                 },
@@ -1305,7 +1305,7 @@ describe('Messages API', () => {
                             email: 'testuser@mail.com',
                             username: 'testuser',
                             profilePicture: 'https://testuser.com',
-                            plan: 'FREE',
+                            plan: 'BASIC',
                         },
                     ],
                 },
@@ -1320,7 +1320,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
@@ -1334,7 +1334,7 @@ describe('Messages API', () => {
                             email: 'testuser@mail.com',
                             username: 'testuser',
                             profilePicture: 'https://testuser.com',
-                            plan: 'FREE',
+                            plan: 'BASIC',
                         },
                     ],
                 },
@@ -1349,7 +1349,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
@@ -1363,7 +1363,7 @@ describe('Messages API', () => {
                             lastName: 'User',
                             username: 'testuser',
                             profilePicture: 'https://testuser.com',
-                            plan: 'FREE',
+                            plan: 'BASIC',
                         },
                     ],
                 },
@@ -1378,7 +1378,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
@@ -1392,7 +1392,7 @@ describe('Messages API', () => {
                             lastName: 'User',
                             email: 'testuser@mail.com',
                             profilePicture: 'https://testuser.com',
-                            plan: 'FREE',
+                            plan: 'BASIC',
                         },
                     ],
                 },
@@ -1407,7 +1407,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
@@ -1421,7 +1421,7 @@ describe('Messages API', () => {
                             lastName: 'User',
                             email: 'testuser@mail.com',
                             username: 'testuser',
-                            plan: 'FREE',
+                            plan: 'BASIC',
                         },
                     ],
                 },
@@ -1436,7 +1436,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
@@ -1465,7 +1465,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
@@ -1480,7 +1480,7 @@ describe('Messages API', () => {
                             email: 'testuser@mail.com',
                             username: 'testuser',
                             profilePicture: 'https://testuser.com',
-                            plan: 'FREEE',
+                            plan: 'BASICE',
                         },
                     ],
                 },
@@ -1495,7 +1495,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                error: 'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
             })
         })
 
