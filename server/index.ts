@@ -1,6 +1,6 @@
 import './loadEnvironment'
 
-const port = process.env.PORT ?? 8001
+const port = process.env.PORT ?? 8000
 const app = require('./app')
 
 app.listen(port, () => {
