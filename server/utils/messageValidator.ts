@@ -206,7 +206,7 @@ function validateResponseMaterialReviews(message: any): ValidationResult {
     if (
         !(
             message['review'] === null ||
-            (Number.isInteger(message['review']) &&
+            (typeof message['review'] === 'number' &&
                 message['review'] >= 1 &&
                 message['review'] <= 5)
         )
@@ -214,7 +214,7 @@ function validateResponseMaterialReviews(message: any): ValidationResult {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be an integer between 1 and 5 or null).',
+                'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be a number between 1 and 5 or null).',
         }
     }
 

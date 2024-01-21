@@ -1165,7 +1165,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be an integer between 1 and 5 or null).',
+                error: 'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be a number between 1 and 5 or null).',
             })
         })
 
@@ -1187,7 +1187,7 @@ describe('Messages API', () => {
 
             expect(response.status).toBe(400)
             expect(response.body).toEqual({
-                error: 'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be an integer between 1 and 5 or null).',
+                error: 'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be a number between 1 and 5 or null).',
             })
         })
 
