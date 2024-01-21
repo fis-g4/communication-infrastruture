@@ -7,6 +7,10 @@ export function validateMessage(
     operationId: string,
     message: any
 ): ValidationResult {
+    if (typeof message === 'string') {
+        message = JSON.parse(message)
+    }
+
     switch (operationId) {
         case 'requestAppUsers':
             return validateRequestAppUsers(message)
@@ -47,11 +51,15 @@ export function validateMessage(
 }
 
 function validateRequestAppUsers(message: any): ValidationResult {
-    if (!Array.isArray(message.usernames) || message.usernames.length === 0) {
+    if (
+        !message['usernames'] ||
+        !Array.isArray(message['usernames']) ||
+        message['usernames'].length === 0
+    ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: requestAppUsers. Missing usernames',
+                'Invalid message for operationId: requestAppUsers. Missing usernames or usernames is not an array or is empty.',
         }
     }
     return { isValid: true }
@@ -59,45 +67,45 @@ function validateRequestAppUsers(message: any): ValidationResult {
 
 function validateNotificationNewPlanPayment(message: any): ValidationResult {
     if (
-        !message.username ||
-        !message.plan ||
-        !['FREE', 'ADVANCED', 'PRO'].includes(message.plan)
+        !message['username'] ||
+        !message['plan'] ||
+        !['BASIC', 'ADVANCED', 'PRO'].includes(message['plan'])
     ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (FREE, ADVANCED, PRO)',
+                'Invalid message for operationId: notificationNewPlanPayment. Missing username or plan, or invalid value for plan (BASIC, ADVANCED, PRO).',
         }
     }
     return { isValid: true }
 }
 function validateNotificationUserDeletion(message: any): ValidationResult {
-    if (!message.username) {
+    if (!message['username']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationUserDeletion. Missing username',
+                'Invalid message for operationId: notificationUserDeletion. Missing username.',
         }
     }
     return { isValid: true }
 }
 function validatePublishNewCourseAccess(message: any): ValidationResult {
-    if (!message.username || !message.courseId) {
+    if (!message['username'] || !message['courseId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: publishNewCourseAccess. Missing username or courseId.',
+                'Invalid message for operationId: publishNewCourseAccess. username and courseId are required.',
         }
     }
     return { isValid: true }
 }
 
 function validatePublishNewMaterialAccess(message: any): ValidationResult {
-    if (!message.username || !message.materialId) {
+    if (!message['username'] || !message['materialId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: publishNewMaterialAccess. Missing username or materialId',
+                'Invalid message for operationId: publishNewMaterialAccess. username and materialId are required.',
         }
     }
     return { isValid: true }
@@ -106,7 +114,7 @@ function validatePublishNewMaterialAccess(message: any): ValidationResult {
 function validateResponseAppClassesAndMaterials(
     message: any
 ): ValidationResult {
-    if (!message.courseId) {
+    if (!message['courseId']) {
         return {
             isValid: false,
             errorMessage:
@@ -114,22 +122,18 @@ function validateResponseAppClassesAndMaterials(
         }
     }
 
-    if (!Array.isArray(message.classIds) || message.classIds.length === 0) {
+    if (message['classIds'] && !Array.isArray(message['classIds'])) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseAppClassesAndMaterials. Missing classIds.',
+                'Invalid message for operationId: responseAppClassesAndMaterials. classIds must be an array.',
         }
     }
-
-    if (
-        !Array.isArray(message.materialIds) ||
-        message.materialIds.length === 0
-    ) {
+    if (message['materialIds'] && !Array.isArray(message['materialIds'])) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseAppClassesAndMaterials. Missing materialIds.',
+                'Invalid message for operationId: responseAppClassesAndMaterials. materialIds must be an array.',
         }
     }
 
@@ -137,18 +141,18 @@ function validateResponseAppClassesAndMaterials(
 }
 
 function validateNotificationNewClass(message: any): ValidationResult {
-    if (!message.classId || !message.courseId) {
+    if (!message['classId'] || !message['courseId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationNewClass. Missing classId or courseId.',
+                'Invalid message for operationId: notificationNewClass. classId and courseId are required.',
         }
     }
     return { isValid: true }
 }
 
 function validateNotificationDeleteClass(message: any): ValidationResult {
-    if (!message.classId) {
+    if (!message['classId']) {
         return {
             isValid: false,
             errorMessage:
@@ -158,11 +162,11 @@ function validateNotificationDeleteClass(message: any): ValidationResult {
     return { isValid: true }
 }
 function validateNotificationAssociateMaterial(message: any): ValidationResult {
-    if (!message.materialId || !message.courseId) {
+    if (!message['materialId'] || !message['courseId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationAssociateMaterial. Missing materialId or courseId.',
+                'Invalid message for operationId: notificationAssociateMaterial. materialId and courseId are required.',
         }
     }
     return { isValid: true }
@@ -171,46 +175,46 @@ function validateNotificationAssociateMaterial(message: any): ValidationResult {
 function validateNotificationDisassociateMaterial(
     message: any
 ): ValidationResult {
-    if (!message.materialId || !message.courseId) {
+    if (!message['materialId'] || !message['courseId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationDisassociateMaterial. Missing materialId or courseId.',
+                'Invalid message for operationId: notificationDisassociateMaterial. materialId and courseId are required.',
         }
     }
     return { isValid: true }
 }
 function validateRequestMaterialReviews(message: any): ValidationResult {
-    if (!message.materialId) {
+    if (!message['materialId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: requestMaterialReviews. Missing materialId',
+                'Invalid message for operationId: requestMaterialReviews. Missing materialId.',
         }
     }
     return { isValid: true }
 }
 
 function validateResponseMaterialReviews(message: any): ValidationResult {
-    if (!message.materialId || !message.review) {
+    if (!message['materialId'] || !message['review']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseMaterialReviews. Missing materialId or review',
+                'Invalid message for operationId: responseMaterialReviews. materialId and review are required.',
         }
     }
     if (
         !(
-            message.review === null ||
-            (Number.isInteger(message.review) &&
-                message.review >= 1 &&
-                message.review <= 5)
+            message['review'] === null ||
+            (typeof message['review'] === 'number' &&
+                message['review'] >= 1 &&
+                message['review'] <= 5)
         )
     ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be an integer between 1 and 5 or null)',
+                'Invalid message for operationId: responseMaterialReviews. Invalid review value (must be a number between 1 and 5 or null).',
         }
     }
 
@@ -218,48 +222,51 @@ function validateResponseMaterialReviews(message: any): ValidationResult {
 }
 
 function validateResponseAppUsers(message: any): ValidationResult {
-    if (!Array.isArray(message.users) || message.users.length === 0) {
+    if (
+        !message['users'] ||
+        (!Array.isArray(message['users']) && message['users'].length > 0)
+    ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseAppUsers. Missing users.',
+                'Invalid message for operationId: responseAppUsers. users must be an array with at least one element.',
         }
     }
 
     if (
         !message.users.every(
             (user: any) =>
-                user.firstName &&
-                user.lastName &&
-                user.username &&
-                user.email &&
-                user.profilePicture &&
-                user.plan &&
-                ['FREE', 'ADVANCED', 'PRO'].includes(user.plan)
+                user['firstName'] &&
+                user['lastName'] &&
+                user['username'] &&
+                user['email'] &&
+                user['profilePicture'] &&
+                user['plan'] &&
+                ['BASIC', 'ADVANCED', 'PRO'].includes(user['plan'])
         )
     ) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be FREE, ADVANCED or PRO).',
+                'Invalid message for operationId: responseAppUsers. Missing properties in user object (firstName, lastName, username, email, profilePicture, plan) or invalid plan value (must be BASIC, ADVANCED or PRO).',
         }
     }
     return { isValid: true }
 }
 
 function validateRequestAppClassesAndMaterials(message: any): ValidationResult {
-    if (!message.courseId) {
+    if (!message['courseId']) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: requestAppClassesAndMaterials. Missing courseId',
+                'Invalid message for operationId: requestAppClassesAndMaterials. Missing courseId.',
         }
     }
     return { isValid: true }
 }
 
 function validateNotificationDeleteCourse(message: any): ValidationResult {
-    if (!message.courseId) {
+    if (!message['courseId']) {
         return {
             isValid: false,
             errorMessage:
@@ -267,22 +274,19 @@ function validateNotificationDeleteCourse(message: any): ValidationResult {
         }
     }
 
-    if (!Array.isArray(message.classIds) || message.classIds.length === 0) {
+    if (message['classIds'] && !Array.isArray(message['classIds'])) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationDeleteCourse. Missing classIds.',
+                'Invalid message for operationId: notificationDeleteCourse. classIds must be an array.',
         }
     }
 
-    if (
-        !Array.isArray(message.materialIds) ||
-        message.materialIds.length === 0
-    ) {
+    if (message['materialIds'] && !Array.isArray(message['materialIds'])) {
         return {
             isValid: false,
             errorMessage:
-                'Invalid message for operationId: notificationDeleteCourse. Missing materialIds.',
+                'Invalid message for operationId: notificationDeleteCourse. materialIds must be an array.',
         }
     }
 
