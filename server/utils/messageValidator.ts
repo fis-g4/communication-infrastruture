@@ -224,7 +224,8 @@ function validateResponseMaterialReviews(message: any): ValidationResult {
 function validateResponseAppUsers(message: any): ValidationResult {
     if (
         !message['users'] ||
-        (!Array.isArray(message['users']) && message['users'].length > 0)
+        !Array.isArray(message['users']) ||
+        message['users'].length === 0
     ) {
         return {
             isValid: false,
