@@ -15,6 +15,7 @@ resource "google_compute_instance" "communication_service_instance" {
     subnetwork = google_compute_subnetwork.communication_microservice_subnetwork.id
 
     access_config {
+      nat_ip = google_compute_address.communication-static-ip-address.address
     }
   }
 
@@ -48,5 +49,12 @@ resource "google_compute_instance" "communication_service_instance" {
   sudo docker compose up -d
   EOF
 
-  depends_on = []
+  depends_on = [
+    google_compute_address.communication-static-ip-address,
+    google_compute_subnetwork.communication_microservice_subnetwork
+  ]
+}
+
+resource "google_compute_address" "communication-static-ip-address" {
+  name       = "${var.instance_name}-public-address"
 }
