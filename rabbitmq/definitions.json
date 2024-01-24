@@ -1,0 +1,125 @@
+{
+    "users": [
+        {
+            "name": "admin",
+            "password_hash": "hu7opLsdSem2EdQ/zc7cwQcFPW64zJUgBPqYhRf3n/uXmGqQ",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": "administrator"
+        },
+        {
+            "name": "consumer",
+            "password_hash": "NS95N+ab5GyCgZ+H5c19F2GNolOZsLDUjovopQSjeA06GhZX",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": ""
+        },
+        {
+            "name": "sender",
+            "password_hash": "u9W6LlcZtqcK4MR480rAhayadSJvig1NZ3bYwXgZWnf42IMh",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": ""
+        }
+    ],
+    "vhosts": [
+        {
+            "name": "/"
+        }
+    ],
+    "permissions": [
+        {
+            "user": "admin",
+            "vhost": "/",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "consumer",
+            "vhost": "/",
+            "configure": "",
+            "write": "",
+            "read": ".*"
+        },
+        {
+            "user": "sender",
+            "vhost": "/",
+            "configure": "",
+            "write": ".*",
+            "read": ""
+        }
+    ],
+    "exchanges": [
+        {
+            "name": "communication_exchange",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        }
+    ],
+    "queues": [
+        {
+            "name": "users_microservice",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-message-ttl": 3600000
+            }
+        },
+        {
+            "name": "courses_microservice",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-message-ttl": 3600000
+            }
+        },
+        {
+            "name": "payments_microservice",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-message-ttl": 3600000
+            }
+        },
+        {
+            "name": "learning_microservice",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-message-ttl": 3600000
+            }
+        }
+    ],
+    "bindings": [
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "courses_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        },
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "payments_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        },
+        {
+            "source": "communication_exchange",
+            "vhost": "/",
+            "destination": "learning_microservice",
+            "destination_type": "queue",
+            "routing_key": "userRemoved",
+            "arguments": {}
+        }
+    ]
+}
