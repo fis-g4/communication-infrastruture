@@ -1,5 +1,8 @@
 # Infraestructura de Mensajería con RabbitMQ para Microservicios
 
+![Deployment](https://github.com/fis-g4/communication-microservice/actions/workflows/cd.yml/badge.svg)
+![Tests](https://github.com/fis-g4/communication-microservice/actions/workflows/tests.yml/badge.svg)
+
 Este repositorio es utilizado para la infraectuctura de RabbitMQ como sistema de mensajería para facilitar la comunicación eficiente entre microservicios. A continuación, se proporciona un resumen de la infraestructura.
 
 ## Componentes Principales
