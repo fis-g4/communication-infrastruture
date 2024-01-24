@@ -1,22 +1,21 @@
 ---
 openapi: 3.0.0
 info:
-  title: Communication Microservice
+  title: Communication Microservice API
   description: |
     This microservice is responsible for managing the communication between microservices.  You can find out more about Communication Microservice at [GitHub repository](https://github.com/fis-g4/communication-microservice).
   contact:
+    name: "Tomás Camero Borrego, Iván Moreno Grando & Miguel Romero Arjona"
     email: migromarj@alum.us.es
   license:
     name: MIT
     url: https://github.com/fis-g4/communication-microservice/blob/main/LICENSE
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/mrarjona/communication-microservice/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://javiercavlop.com/v1/messages
+- url: https://api.javiercavlop.com/v1/messages
 tags:
 - name: messages
-  description: Operations about messages
+  description: Operations about messages with RabbitMQ broker
 paths:
   /check:
     get:
