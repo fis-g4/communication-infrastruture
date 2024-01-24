@@ -40,7 +40,6 @@ resource "google_compute_instance" "communication_service_instance" {
   cd /home/${var.user}
   git clone https://github.com/fis-g4/communication-microservice.git
   cd communication-microservice
-  git checkout develop
   git pull
   export ENV_CONFIGURATION="${file(".env.prod")}"
   export GOOGLE_APPLICATION_CREDENTIALS='${file("GoogleCloudKey.json")}'
