@@ -3,7 +3,7 @@ name: Deploy to GCE
 on:
   workflow_run:
     workflows: [Communication Microservice Tests] 
-    types: 
+    types:
       - completed
     branches:
       - main
