@@ -1,9 +1,12 @@
 name: Deploy to GCE
 
 on:
-  push:
+  workflow_run:
+    workflows: [Communication Microservice Tests] 
+    types: 
+      - completed
     branches:
-      - "main"
+      - main
 
 env:
   ENV_CONFIGURATION: ${{ secrets.ENV_CONFIGURATION }}
@@ -11,9 +14,6 @@ env:
   GCP_CREDENTIALS: ${{ secrets.ENCODED_GCP_CREDENTIALS }}
 
 jobs:
-  test:
-    uses: fis-g4/communication-microservice/.github/workflows/tests.yml@main
-
   deploy-flatter-to-gce:
     name: Communication Microservice Deployment to GCE
     runs-on: ubuntu-latest
